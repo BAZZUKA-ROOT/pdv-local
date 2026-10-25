@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PDV Local — Nova Venda</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tela="vendas">
+<div class="title-bar">
+  <div class="title-bar-left"><span class="brand-name">PDV Local</span></div>
+  <div class="title-bar-right">
+    <button class="title-btn minimize" onclick="api.minimizarJanela()">─</button>
+    <button class="title-btn maximize" onclick="api.maximizarJanela()">□</button>
+    <button class="title-btn close" onclick="api.fecharJanela()">✕</button>
+  </div>
+</div>
+
+<div class="app-container">
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <main class="main-content">
+    <header class="top-header">
+      <button class="header-btn" title="Mais"><svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+      <button class="header-btn" title="Configurações"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+      <div class="plan-badge">Plano Local</div>
+      <button class="header-btn" title="Sincronização"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></button>
+      <div class="user-avatar">M</div>
+      <button class="header-btn" title="Configurações"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+    </header>
+
+    <div class="venda-container">
+      <h1 class="page-title" id="pageTitle">Venda</h1>
+
+      <!-- Botões de ação superior (igual ao Nex) -->
+      <div class="venda-actions">
+        <button class="venda-action-btn primary" onclick="novaVenda()"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> Nova Venda <kbd>F3</kbd></button>
+        <button class="venda-action-btn" onclick="novoPedido()"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg> Novo Pedido <kbd>F4</kbd></button>
+        <button class="venda-action-btn" onclick="novoOrcamento()"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg> Novo Orçamento <kbd>F5</kbd></button>
+        <button class="venda-action-btn" onclick="trocaDevolucao()"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg> Troca ou Devolução</button>
+      </div>
+
+      <!-- Abas (igual ao Nex) -->
+      <div class="venda-tabs">
+        <div class="venda-tab active" onclick="mostrarAbaVenda('nova')">Nova Venda</div>
+        <div class="venda-tab" onclick="mostrarAbaVenda('historico')">Histórico</div>
+        <div class="venda-tab" onclick="mostrarAbaVenda('aberto')">Pedido em Aberto</div>
+        <div class="venda-tab" onclick="mostrarAbaVenda('online')">Pedido Online</div>
+        <div class="venda-tab" onclick="mostrarAbaVenda('orcamentos')">Orçamentos</div>
+      </div>
+
+        <div class="search-section">
+          <div class="search-pill">
+            <span class="search-icon"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
+            <input type="text" id="produtoBusca" placeholder="Buscar produto por código ou descrição..." autocomplete="off">
+            <span class="search-chevron">▾</span>
+          </div>
+          <div class="quantidade-pill">
+            <label>Quant:</label>
+            <input type="number" id="quantidade" value="1" min="1">
+            <span>Peça</span>
+          </div>
+        </div>
+
+        <div class="search-dropdown" id="searchDropdown" style="display:none">
+          <table class="dropdown-table">
+            <thead><tr><th>Código</th><th>Descrição</th><th>Preço</th><th>Estoque</th></tr></thead>
+            <tbody id="dropdownResults"></tbody>
+          </table>
+        </div>
+
+        <div class="venda-middle">
+          <div class="cart-grid">
+            <table class="cart-table">
+              <thead><tr><th class="col-num">Nº</th><th class="col-qtd">Qtd</th><th>Produto</th><th class="col-preco">Preço</th><th class="col-del"></th></tr></thead>
+              <tbody id="cartItems">
+                <tr class="empty-cart"><td colspan="5">
+                  <div class="empty-state"><span class="zzz"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span><p>Carrinho vazio — busque um produto acima</p></div>
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="right-panel">
+            <div class="panel-card panel-info">
+              <span id="itemCount">0 item(ns)</span>
+              <span>Quantidade: <strong id="totalQty">0</strong></span>
+            </div>
+            <div class="panel-card">
+              <button class="action-btn" onclick="abrirCliente()">Cliente <kbd>F5</kbd></button>
+              <button class="action-btn" onclick="abrirEntrega()">Entrega <kbd>F9</kbd></button>
+              <button class="action-btn" onclick="abrirObservacoes()">Observações <kbd>F4</kbd></button>
+            </div>
+            <div class="panel-card atalhos-section">
+              <h4>Atalhos</h4>
+              <ul>
+                <li><kbd>F1</kbd> Ler peso da balança</li>
+                <li><kbd>F3</kbd> Desconto</li>
+                <li><kbd>F10</kbd> Editar item selecionado</li>
+                <li><kbd>F12</kbd> Quantidade</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        
+<!-- ABA: Histórico -->
+      <div id="abaHistorico" style="display:none">
+        <div class="toolbar">
+          <input type="text" class="search-input" id="buscaHistorico" placeholder="Buscar venda...">
+          <div class="spacer"></div>
+        </div>
+        <div class="grid-wrap">
+          <table class="data-table">
+            <thead><tr><th>Nº</th><th>Data/Hora</th><th>Cliente</th><th>Vendedor</th><th>Itens</th><th>Total</th><th>Status</th><th>Ação</th></tr></thead>
+            <tbody id="tbodyHistorico"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA: Pedido em Aberto -->
+      <div id="abaAberto" style="display:none">
+        <div class="toolbar">
+          <button class="btn-primary" onclick="salvarPedidoAberto()">Salvar Pedido Atual em Aberto</button>
+          <div class="spacer"></div>
+        </div>
+        <div class="grid-wrap">
+          <table class="data-table">
+            <thead><tr><th>Data/Hora</th><th>Cliente</th><th>Itens</th><th>Total</th><th>Obs</th><th>Ação</th></tr></thead>
+            <tbody id="tbodyPedidosAbertos"><tr><td colspan="6" class="empty-grid">Nenhum pedido em aberto</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA: Pedido Online -->
+      <div id="abaOnline" style="display:none">
+        <div class="empty-grid" style="padding:60px 20px">
+          <p style="font-size:16px;margin-bottom:8px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg> Nenhum pedido online</p>
+          <p class="text-sec">Pedidos recebidos pelo catálogo online aparecerão aqui</p>
+        </div>
+      </div>
+
+      <!-- ABA: Orçamentos -->
+      <div id="abaOrcamentos" style="display:none">
+        <div class="toolbar">
+          <button class="btn-primary" onclick="salvarOrcamento()">Salvar Orçamento Atual</button>
+          <div class="spacer"></div>
+        </div>
+        <div class="grid-wrap">
+          <table class="data-table">
+            <thead><tr><th>Número</th><th>Data</th><th>Cliente</th><th>Itens</th><th>Total</th><th>Validade</th><th>Ação</th></tr></thead>
+            <tbody id="tbodyOrcamentos"><tr><td colspan="7" class="empty-grid">Nenhum orçamento salvo</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  
+<footer class="venda-footer">
+          <div class="footer-left">
+            <select id="vendedorSelect" class="vendedor-select"><option value="">Selecione um vendedor: - F6</option></select>
+            <span class="datetime" id="currentDateTime"></span>
+          </div>
+          <div class="footer-center">
+            <span class="total-label">Total:</span>
+            <span class="total-value" id="totalValue">R$ 0,00</span>
+          </div>
+          <div class="footer-right">
+            <button class="btn-concluir" id="btnConcluir" disabled onclick="concluirVenda()">CONCLUIR VENDA <kbd>F2</kbd></button>
+          </div>
+        </footer>
+</main>
+</div>
+
+<!-- Modal preço unitário -->
+<div class="modal-overlay" id="precoModal" style="display:none">
+  <div class="modal">
+    <h3>Preço unitário</h3>
+    <div class="text-sec" id="precoModalNome" style="margin-bottom:12px;font-size:13px"></div>
+    <input type="number" id="precoUnitario" step="0.01" class="modal-input">
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fecharModalPreco()">CANCELAR</button>
+      <button class="btn-primary" onclick="confirmarAdicionarItem()">ADICIONAR ITEM</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal cliente -->
+<div class="modal-overlay" id="clienteModal" style="display:none">
+  <div class="modal" style="width:440px">
+    <h3>Cliente <span class="text-sec" style="font-weight:400;font-size:12px">— F5</span></h3>
+    <div class="form-row"><label>Buscar cliente</label>
+      <select id="clienteSelect" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px"></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('clienteModal')">CANCELAR</button>
+      <button class="btn-primary" onclick="confirmarCliente()">SELECIONAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal observações -->
+<div class="modal-overlay" id="obsModal" style="display:none">
+  <div class="modal" style="width:440px">
+    <h3>Observações <span class="text-sec" style="font-weight:400;font-size:12px">— F4</span></h3>
+    <div class="form-row"><textarea id="obsTexto" rows="5" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px;resize:vertical"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('obsModal')">CANCELAR</button>
+      <button class="btn-primary" onclick="confirmarObs()">SALVAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal forma de pagamento -->
+<div class="modal-overlay" id="pagModal" style="display:none">
+  <div class="modal" style="width:400px">
+    <h3>Forma de Pagamento</h3>
+    <div class="form-row"><label>Total a receber</label>
+      <div id="pagTotal" style="font-size:24px;font-weight:700"></div>
+    </div>
+    <div class="form-row"><label>Meio de pagamento</label>
+      <select id="formaPagamento" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px">
+        <option>Dinheiro</option><option>Cartão de Crédito</option><option>Cartão de Débito</option>
+        <option>Pix</option><option>Transferência</option><option>Crediário</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('pagModal')">CANCELAR</button>
+      <button class="btn-primary" onclick="finalizarVenda()">CONFIRMAR PAGAMENTO</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Troca/Devolução -->
+<div class="modal-overlay" id="trocaModal" style="display:none">
+  <div class="modal" style="width:440px">
+    <h3>Troca ou Devolução</h3>
+    <div class="form-row"><label>Nº da Venda Original *</label><input type="text" id="trocaVendaNum" placeholder="Ex: 0001"></div>
+    <div class="form-row"><label>Motivo</label><textarea id="trocaMotivo" rows="3" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px;resize:vertical" placeholder="Motivo da troca/devolução..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('trocaModal')">CANCELAR</button>
+      <button class="btn-primary" onclick="confirmarTroca()">INICIAR TROCA</button>
+    </div>
+  </div>
+</div>
+<!-- Modal Entrega -->
+<div class="modal-overlay" id="entregaModal" style="display:none">
+  <div class="modal" style="width:440px">
+    <h3>Endereço de Entrega <span class="text-sec" style="font-weight:400;font-size:12px">— F9</span></h3>
+    <div class="form-row"><label>Endereço completo *</label><textarea id="entregaEndereco" rows="3" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px;resize:vertical" placeholder="Rua, número, bairro, cidade..."></textarea></div>
+    <div class="form-row"><label>Observações</label><input type="text" id="entregaObs" placeholder="Ex: entregar após 18h"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('entregaModal')">CANCELAR</button>
+      <button class="btn-primary" onclick="confirmarEntrega()">SALVAR</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="shell.js"></script>
+<script src="vendas.js"></script>
+</body>
+</html>

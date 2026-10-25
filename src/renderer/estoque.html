@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PDV Local — Estoque</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tela="estoque">
+<div class="title-bar">
+<div class="title-bar-left"><span class="brand-name">PDV Local</span></div>
+<div class="title-bar-right">
+<button class="title-btn minimize" onclick="api.minimizarJanela()">─</button>
+<button class="title-btn maximize" onclick="api.maximizarJanela()">□</button>
+<button class="title-btn close" onclick="api.fecharJanela()">✕</button>
+</div>
+</div>
+<div class="app-container">
+<nav class="sidebar" id="sidebar"></nav>
+<main class="main-content">
+<header class="top-header">
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+<div class="plan-badge">Plano Local</div>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></button>
+<div class="user-avatar">M</div>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+</header>
+<div class="page-body">
+<h1 class="page-title">Estoque</h1>
+<div class="tabs">
+<div class="tab active" onclick="mostrarAba('estoque')">Estoque por produto</div>
+<div class="tab" onclick="mostrarAba('transacoes')">Transações</div>
+<div class="tab" onclick="mostrarAba('validade')">Controle de Validade</div>
+<div class="tab" onclick="mostrarAba('inventario')">Inventário</div>
+</div>
+
+<!-- ABA: Estoque por produto -->
+<div id="abaEstoque">
+<div class="toolbar">
+<input type="text" class="search-input" id="buscaEstoque" placeholder="Buscar produto...">
+<div class="spacer"></div>
+</div>
+<div class="grid-wrap">
+<table class="data-table">
+<thead>
+<tr>
+<th>Imagem</th>
+<th>Produto</th>
+<th>Código</th>
+<th>Estoque Atual</th>
+<th>Disponível</th>
+<th>Est. Adquirido</th>
+<th>Custo</th>
+<th>Preço</th>
+<th>Revenda %</th>
+<th>Ação</th>
+</tr>
+</thead>
+<tbody id="tbodyEstoque"></tbody>
+<tfoot id="tfootEstoque"></tfoot>
+</table>
+</div>
+</div>
+
+<!-- ABA: Transações -->
+<div id="abaTransacoes" style="display:none">
+<div class="grid-wrap">
+<table class="data-table">
+<thead>
+<tr>
+<th>Data/Hora</th>
+<th>Tipo</th>
+<th>Produto</th>
+<th>Quantidade</th>
+<th>Motivo</th>
+<th>Funcionário</th>
+</tr>
+</thead>
+<tbody id="tbodyTransacoes"></tbody>
+</table>
+</div>
+</div>
+
+<!-- ABA: Controle de Validade -->
+<div id="abaValidade" style="display:none">
+<div class="toolbar">
+<button class="btn-primary" onclick="abrirRegistrarValidade()">+ Registrar Validade</button>
+<div class="spacer"></div>
+</div>
+<div class="grid-wrap">
+<table class="data-table">
+<thead><tr><th>Produto</th><th>Lote</th><th>Validade</th><th>Qtd</th><th>Status</th><th>Ação</th></tr></thead>
+<tbody id="tbodyValidades"><tr><td colspan="6" class="empty-grid">Nenhuma validade registrada</td></tr></tbody>
+</table>
+</div>
+</div>
+
+<!-- ABA: Inventário -->
+<div id="abaInventario" style="display:none">
+<div class="toolbar">
+<button class="btn-primary" onclick="iniciarInventario()">Novo Inventário</button>
+<div class="spacer"></div>
+</div>
+<div class="grid-wrap">
+<table class="data-table">
+<thead><tr><th>Produto</th><th>Código</th><th>Estoque Sistema</th><th>Contagem Física</th><th>Diferença</th><th>Ação</th></tr></thead>
+<tbody id="tbodyInventario"><tr><td colspan="6" class="empty-grid">Clique em "Novo Inventário" para iniciar uma contagem</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<!-- Modal ajuste de estoque -->
+<div class="modal-overlay" id="ajusteModal" style="display:none">
+<div class="modal" style="width:400px">
+<h3>Ajustar Estoque</h3>
+<div class="text-sec" id="ajusteProdutoNome" style="margin-bottom:12px"></div>
+<input type="hidden" id="ajusteProdutoId">
+<div class="form-row"><label>Tipo</label>
+<select id="ajusteTipo" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px">
+<option value="entrada">Entrada (+)</option>
+<option value="saida">Saída (-)</option>
+</select>
+</div>
+<div class="form-row"><label>Quantidade</label><input type="number" id="ajusteQtd" min="1" value="1"></div>
+<div class="form-row"><label>Motivo</label><input type="text" id="ajusteMotivo" placeholder="Ex: compra, perda, acerto..."></div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="fechar('ajusteModal')">CANCELAR</button>
+<button class="btn-primary" onclick="confirmarAjuste()">SALVAR</button>
+</div>
+</div>
+</div>
+<!-- Modal registrar validade -->
+<div class="modal-overlay" id="validadeModal" style="display:none">
+<div class="modal" style="width:440px">
+<h3>Registrar Validade</h3>
+<div class="form-row"><label>Produto *</label>
+<select id="valProduto" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px"></select>
+</div>
+<div class="form-grid">
+<div class="form-row"><label>Lote</label><input type="text" id="valLote" placeholder="Ex: L001"></div>
+<div class="form-row"><label>Validade *</label><input type="date" id="valData"></div>
+</div>
+<div class="form-row"><label>Quantidade</label><input type="number" id="valQtd" min="1" value="1"></div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="fechar('validadeModal')">CANCELAR</button>
+<button class="btn-primary" onclick="salvarValidade()">SALVAR</button>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="shell.js"></script>
+<script src="estoque.js"></script>
+</body>
+</html>

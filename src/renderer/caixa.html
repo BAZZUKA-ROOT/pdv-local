@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PDV Local — Caixa</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tela="caixa">
+<div class="title-bar">
+ <div class="title-bar-left"><span class="brand-name">PDV Local</span></div>
+ <div class="title-bar-right">
+ <button class="title-btn minimize" onclick="api.minimizarJanela()">─</button>
+ <button class="title-btn maximize" onclick="api.maximizarJanela()">□</button>
+ <button class="title-btn close" onclick="api.fecharJanela()">✕</button>
+ </div>
+</div>
+<div class="app-container">
+ <nav class="sidebar" id="sidebar"></nav>
+ <main class="main-content">
+ <header class="top-header">
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+ <div class="plan-badge">Plano Local</div>
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></button>
+ <div class="user-avatar">M</div>
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+ </header>
+ <div class="page-body">
+ <h1 class="page-title">Caixa</h1>
+
+ <!-- Abas do Caixa -->
+ <div class="caixa-tabs">
+ <div class="caixa-tab active" onclick="mostrarAbaCaixa('atual')">Caixa Atual</div>
+ <div class="caixa-tab" onclick="mostrarAbaCaixa('anteriores')">Caixas Anteriores</div>
+ <div class="caixa-tab" onclick="mostrarAbaCaixa('conferir')">Conferir Meio de Pagamento</div>
+ <div class="caixa-tab" onclick="mostrarAbaCaixa('contador')">Contador de Dinheiro</div>
+ </div>
+
+ <!-- ABA: Caixa Atual -->
+ <div id="abaCaixaAtual">
+ <div id="caixaAberto" style="display:none">
+ <div class="cards-row">
+ <div class="card">
+ <h4>Resumo do Caixa</h4>
+ <div class="line"><span>Saldo Inicial</span><span id="saldoInicial">R$ 0,00</span></div>
+ <div class="line"><span>Total de Vendas</span><span id="totalVendas">R$ 0,00</span></div>
+ <div class="line"><span>Entradas</span><span id="totalEntradas" style="color:var(--verde)">R$ 0,00</span></div>
+ <div class="line"><span>Saídas</span><span id="totalSaidas" style="color:var(--vermelho)">R$ 0,00</span></div>
+ <div class="line"><span>Saldo Esperado</span><span class="big" id="saldoEsperado">R$ 0,00</span></div>
+ <div class="line"><span>Lucro Bruto</span><span id="lucroBruto">R$ 0,00</span></div>
+ <div style="margin-top:12px;display:flex;gap:8px">
+ <button class="btn-primary" onclick="abrirMovimentacao('entrada')">+ Adicionar Dinheiro</button>
+ <button class="btn-cancel" onclick="abrirMovimentacao('saida')">- Remover Valores</button>
+ </div>
+ </div>
+ <div class="card">
+ <h4>Movimentação</h4>
+ <div id="movimentacoes" style="max-height:320px;overflow-y:auto"></div>
+ </div>
+ </div>
+ <!-- Meio de Pagamento card -->
+ <div class="card" style="margin-top:16px">
+ <h4>Meio de Pagamento</h4>
+ <div class="meio-pag-card" id="meioPagCard">
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></span> Dinheiro <span class="mp-val" id="mpDinheiro">R$ 0,00</span></div>
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></span> Crédito <span class="mp-val" id="mpCredito">R$ 0,00</span></div>
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></span> Débito <span class="mp-val" id="mpDebito">R$ 0,00</span></div>
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></span> Pix <span class="mp-val" id="mpPix">R$ 0,00</span></div>
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M4 10h3v7H4zM10.5 10h3v7h-3zM2 19h20v3H2zM17 10h3v7h-3zM12 1l-5 5h3v11h4V6h3z"/></svg></span> Transferência <span class="mp-val" id="mpTransferencia">R$ 0,00</span></div>
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></span> Crediário <span class="mp-val" id="mpCrediario">R$ 0,00</span></div>
+ </div>
+ </div>
+ <!-- Canais de Venda -->
+ <div class="card" style="margin-top:16px">
+ <h4>Canais de Venda</h4>
+ <div class="meio-pag-card">
+ <div class="meio-pag-item"><span class="mp-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></span> Loja Física <span class="mp-val" id="canalLoja">R$ 0,00</span></div> </div>
+ </div>
+ <div style="margin-top:16px;text-align:right">
+ <button class="btn-concluir" onclick="abrirFecharCaixa()">FECHAR CAIXA</button>
+ </div>
+ </div>
+ <div id="caixaFechado">
+ <div class="empty-grid" style="padding:80px 20px">
+ <p style="font-size:18px;margin-bottom:16px">Nenhum caixa aberto</p>
+ <button class="btn-primary" onclick="abrirAbrirCaixa()">ABRIR CAIXA</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- ABA: Caixas Anteriores -->
+ <div id="abaCaixaAnteriores" style="display:none">
+ <div class="grid-wrap">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>Nº</th>
+ <th>Abertura</th>
+ <th>Fechamento</th>
+ <th>Saldo Inicial</th>
+ <th>Total Vendas</th>
+ <th>Saldo Final</th>
+ <th>Usuário</th>
+ <th>Status</th>
+ </tr>
+ </thead>
+ <tbody id="tbodyCaixasAnteriores"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- ABA: Conferir Meio de Pagamento -->
+ <div id="abaConferir" style="display:none">
+ <div class="cards-row">
+ <div class="card">
+ <h4>Resumo por Meio de Pagamento</h4>
+ <div id="conferirLista"></div>
+ </div>
+ <div class="card">
+ <h4>Detalhamento</h4>
+ <div class="grid-wrap" style="max-height:400px">
+ <table class="data-table">
+ <thead><tr><th>Meio</th><th>Qtd Vendas</th><th>Total</th><th>% do Total</th></tr></thead>
+ <tbody id="tbodyConferir"></tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- ABA: Contador de Dinheiro -->
+ <div id="abaContador" style="display:none">
+ <div class="card">
+ <h4>Contador de Cédulas e Moedas</h4>
+ <div class="contador-dinheiro" id="contadorGrid"></div>
+ <div style="margin-top:16px;border-top:2px solid var(--borda);padding-top:12px;display:flex;justify-content:space-between;align-items:center">
+ <span style="font-size:14px;font-weight:600">Total Contado:</span>
+ <span style="font-size:22px;font-weight:700;color:var(--azul)" id="contadorTotal">R$ 0,00</span>
+ </div>
+ <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+ <span style="font-size:13px;color:var(--texto-sec)">Diferença:</span>
+ <span style="font-size:16px;font-weight:600" id="contadorDiferenca">R$ 0,00</span>
+ </div>
+ <div style="margin-top:12px;text-align:right">
+ <button class="btn-primary" onclick="calcularContador()">Calcular</button>
+ </div>
+ </div>
+ </div>
+
+ </div>
+ </main>
+</div>
+
+<!-- Modal abrir caixa -->
+<div class="modal-overlay" id="abrirCaixaModal" style="display:none">
+ <div class="modal">
+ <h3>Abrir Caixa</h3>
+ <div class="form-row"><label>Saldo Inicial</label><input type="number" step="0.01" id="saldoInicialInput" value="0"></div>
+ <div class="modal-actions">
+ <button class="btn-cancel" onclick="fechar('abrirCaixaModal')">CANCELAR</button>
+ <button class="btn-primary" onclick="confirmarAbrirCaixa()">ABRIR</button>
+ </div>
+ </div>
+</div>
+
+<!-- Modal movimentação -->
+<div class="modal-overlay" id="movimentacaoModal" style="display:none">
+ <div class="modal">
+ <h3 id="movimentacaoTitulo">Movimentação</h3>
+ <div class="form-row"><label>Valor</label><input type="number" step="0.01" id="movimentacaoValor"></div>
+ <div class="form-row"><label>Descrição</label><input type="text" id="movimentacaoDesc" placeholder="Ex: troco, sangria..."></div>
+ <div class="modal-actions">
+ <button class="btn-cancel" onclick="fechar('movimentacaoModal')">CANCELAR</button>
+ <button class="btn-primary" onclick="confirmarMovimentacao()">SALVAR</button>
+ </div>
+ </div>
+</div>
+
+<!-- Modal fechar caixa -->
+<div class="modal-overlay" id="fecharCaixaModal" style="display:none">
+ <div class="modal">
+ <h3>Fechar Caixa</h3>
+ <div class="form-row"><label>Saldo Final Informado</label><input type="number" step="0.01" id="saldoFinalInput"></div>
+ <div class="modal-actions">
+ <button class="btn-cancel" onclick="fechar('fecharCaixaModal')">CANCELAR</button>
+ <button class="btn-primary" onclick="confirmarFecharCaixa()">FECHAR</button>
+ </div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="shell.js"></script>
+<script src="caixa.js"></script>
+</body>
+</html>

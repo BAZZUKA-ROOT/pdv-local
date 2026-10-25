@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PDV Local — Clientes</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tela="clientes">
+<div class="title-bar">
+<div class="title-bar-left"><span class="brand-name">PDV Local</span></div>
+<div class="title-bar-right">
+<button class="title-btn minimize" onclick="api.minimizarJanela()">─</button>
+<button class="title-btn maximize" onclick="api.maximizarJanela()">□</button>
+<button class="title-btn close" onclick="api.fecharJanela()">✕</button>
+</div>
+</div>
+<div class="app-container">
+<nav class="sidebar" id="sidebar"></nav>
+<main class="main-content">
+<header class="top-header">
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+<div class="plan-badge">Plano Local</div>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></button>
+<div class="user-avatar">M</div>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+</header>
+<div class="page-body">
+<h1 class="page-title">Clientes</h1>
+<div class="toolbar">
+<button class="btn-primary" onclick="abrirNovoCliente()">+ Novo Cliente</button>
+<input type="text" class="search-input" id="buscaCliente" placeholder="Buscar cliente...">
+<div class="spacer"></div>
+</div>
+<div class="grid-wrap">
+<table class="data-table">
+<thead>
+<tr>
+<th>Ação</th>
+<th>Código</th>
+<th>Nome</th>
+<th>CPF/CNPJ</th>
+<th>RG/I.E.</th>
+<th>Telefone</th>
+<th>Data Nasc.</th>
+<th>Débito</th>
+<th>Crédito</th>
+<th>Observações</th>
+</tr>
+</thead>
+<tbody id="tbodyClientes"></tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- Modal cliente -->
+<div class="modal-overlay" id="clienteModal" style="display:none">
+<div class="modal" style="width:520px;max-height:90vh;overflow-y:auto">
+<h3 id="clienteModalTitulo">Novo Cliente</h3>
+<input type="hidden" id="clienteId">
+<div class="form-row"><label>Nome *</label><input type="text" id="cliNome"></div>
+<div class="form-grid">
+<div class="form-row"><label>CPF/CNPJ</label><input type="text" id="cliCpfCnpj"></div>
+<div class="form-row"><label>RG/I.E.</label><input type="text" id="cliRgIe"></div>
+</div>
+<div class="form-grid">
+<div class="form-row"><label>Telefone</label><input type="text" id="cliTelefone"></div>
+<div class="form-row"><label>Email</label><input type="email" id="cliEmail"></div>
+</div>
+<div class="form-row"><label>Endereço</label><input type="text" id="cliEndereco"></div>
+<div class="form-grid">
+<div class="form-row"><label>Número</label><input type="text" id="cliNumero"></div>
+<div class="form-row"><label>Complemento</label><input type="text" id="cliComplemento"></div>
+</div>
+<div class="form-grid">
+<div class="form-row"><label>Bairro</label><input type="text" id="cliBairro"></div>
+<div class="form-row"><label>Cidade</label><input type="text" id="cliCidade"></div>
+</div>
+<div class="form-grid">
+<div class="form-row"><label>Estado</label><input type="text" id="cliEstado" maxlength="2"></div>
+<div class="form-row"><label>CEP</label><input type="text" id="cliCep"></div>
+</div>
+<div class="form-row"><label>Data de Nascimento</label><input type="date" id="cliDataNasc"></div>
+<div class="form-row"><label>Observações</label><textarea id="cliObs" rows="3" style="resize:vertical"></textarea></div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="fechar('clienteModal')">CANCELAR</button>
+<button class="btn-primary" onclick="salvarCliente()">SALVAR</button>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="shell.js"></script>
+<script src="clientes.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PDV Local — Contas a Pagar</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tela="contas">
+<div class="title-bar">
+<div class="title-bar-left"><span class="brand-name">PDV Local</span></div>
+<div class="title-bar-right">
+<button class="title-btn minimize" onclick="api.minimizarJanela()">─</button>
+<button class="title-btn maximize" onclick="api.maximizarJanela()">□</button>
+<button class="title-btn close" onclick="api.fecharJanela()">✕</button>
+</div>
+</div>
+<div class="app-container">
+<nav class="sidebar" id="sidebar"></nav>
+<main class="main-content">
+<header class="top-header">
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+<div class="plan-badge">Plano Local</div>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></button>
+<div class="user-avatar">M</div>
+<button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+</header>
+<div class="page-body">
+<h1 class="page-title">Contas a Pagar</h1>
+<div class="toolbar">
+<button class="btn-primary" onclick="abrirNovaConta()">+ Nova Conta</button>
+<input type="text" class="search-input" id="buscaConta" placeholder="Buscar conta...">
+<div class="spacer"></div>
+</div>
+<div class="grid-wrap">
+<table class="data-table">
+<thead>
+<tr>
+<th>Ação</th>
+<th>Número</th>
+<th>Tipo</th>
+<th>Descrição</th>
+<th>Fornecedor</th>
+<th>Valor</th>
+<th>Valor Pago</th>
+<th>Vencimento</th>
+<th>Dias</th>
+<th>Mês</th>
+<th>Semana</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="tbodyContas"></tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- Modal conta -->
+<div class="modal-overlay" id="contaModal" style="display:none">
+<div class="modal" style="width:480px;max-height:90vh;overflow-y:auto">
+<h3 id="contaModalTitulo">Nova Conta</h3>
+<input type="hidden" id="contaId">
+<div class="form-grid">
+<div class="form-row"><label>Número</label><input type="text" id="contaNumero"></div>
+<div class="form-row"><label>Tipo</label>
+<select id="contaTipo" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px">
+<option>Despesa Fixa</option><option>Despesa Variável</option><option>Fornecedor</option><option>Imposto</option><option>Aluguel</option><option>Salário</option><option>Outros</option>
+</select>
+</div>
+</div>
+<div class="form-row"><label>Descrição *</label><input type="text" id="contaDescricao"></div>
+<div class="form-row"><label>Fornecedor</label><input type="text" id="contaFornecedor"></div>
+<div class="form-grid">
+<div class="form-row"><label>Valor *</label><input type="number" step="0.01" id="contaValor"></div>
+<div class="form-row"><label>Valor Pago</label><input type="number" step="0.01" id="contaValorPago"></div>
+</div>
+<div class="form-grid">
+<div class="form-row"><label>Vencimento *</label><input type="date" id="contaVencimento"></div>
+<div class="form-row"><label>Pago em</label><input type="date" id="contaPagoEm"></div>
+</div>
+<div class="form-grid">
+<div class="form-row"><label>Categoria</label><input type="text" id="contaCategoria"></div>
+<div class="form-row"><label>Status</label>
+<select id="contaStatus" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px">
+<option value="pendente">Pendente</option><option value="pago">Pago</option><option value="atrasado">Atrasado</option><option value="cancelado">Cancelado</option>
+</select>
+</div>
+</div>
+<div class="form-row"><label>Referência</label><input type="text" id="contaReferencia"></div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="fechar('contaModal')">CANCELAR</button>
+<button class="btn-primary" onclick="salvarConta()">SALVAR</button>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="shell.js"></script>
+<script src="contas.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+node_modules/
+_dados_extraidos/
+DADOS GERAIS.zip
+dist/
+*.db
+*.sqlite
+Thumbs.db
+.DS_Store
+Nex_Analise/

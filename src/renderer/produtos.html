@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PDV Local — Produtos</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-tela="produtos">
+<div class="title-bar">
+ <div class="title-bar-left"><span class="brand-name">PDV Local</span></div>
+ <div class="title-bar-right">
+ <button class="title-btn minimize" onclick="api.minimizarJanela()">─</button>
+ <button class="title-btn maximize" onclick="api.maximizarJanela()">□</button>
+ <button class="title-btn close" onclick="api.fecharJanela()">✕</button>
+ </div>
+</div>
+<div class="app-container">
+ <nav class="sidebar" id="sidebar"></nav>
+ <main class="main-content">
+ <header class="top-header">
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+ <div class="plan-badge">Plano Local</div>
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></button>
+ <div class="user-avatar">M</div>
+ <button class="header-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+ </header>
+ <div class="page-body">
+ <div class="produtos-layout">
+ <!-- Sidebar de categorias -->
+ <div class="prod-cat-sidebar">
+ <div class="prod-cat-item active" onclick="filtrarCategoria('')">
+ <span>Todos</span>
+ <span class="cat-count" id="catCountAll">0</span>
+ </div>
+ <div id="listaCategorias"></div>
+ <a class="prod-cat-link" onclick="gerenciarCategorias()">Gerenciar categorias</a>
+ </div>
+ <!-- Conteúdo principal -->
+ <div class="prod-main">
+ <h1 class="page-title">Produtos</h1>
+ <div class="tabs">
+ <div class="tab active" onclick="mostrarAbaProduto('itens')">Itens</div>
+ <div class="tab" onclick="mostrarAbaProduto('etiquetas')">Etiquetas</div>
+ <div class="tab" onclick="mostrarAbaProduto('fornecedores')">Fornecedores</div>
+ <div class="tab" onclick="mostrarAbaProduto('tributacoes')">Tributações</div>
+ </div>
+
+ <!-- ABA: Itens -->
+ <div id="abaItens">
+ <div class="toolbar">
+ <button class="btn-primary" onclick="abrirNovoProduto()">+ Novo Produto</button>
+ <input type="text" class="search-input" id="buscaProduto" placeholder="Buscar produto...">
+ <div class="spacer"></div>
+ </div>
+ <div class="grid-wrap">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>Ação</th>
+ <th>Imagem</th>
+ <th>Nome</th>
+ <th>Código</th>
+ <th>Preço</th>
+ <th>Custo</th>
+ <th>Estoque</th>
+ <th>Categoria</th>
+ <th>Fornecedor</th>
+ </tr>
+ </thead>
+ <tbody id="tbodyProdutos"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- ABA: Etiquetas -->
+ <div id="abaEtiquetas" style="display:none">
+ <div class="toolbar">
+ <button class="btn-primary" onclick="imprimirEtiquetas()">Imprimir Etiquetas Selecionadas</button>
+ <div class="spacer"></div>
+ </div>
+ <div class="grid-wrap">
+ <table class="data-table">
+ <thead><tr><th style="width:40px"><input type="checkbox" id="chkAllEtq" onchange="toggleAllEtiquetas(this.checked)"></th><th>Produto</th><th>Código</th><th>Preço</th><th>Qtd Etiquetas</th></tr></thead>
+ <tbody id="tbodyEtiquetas"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- ABA: Fornecedores -->
+ <div id="abaFornecedores" style="display:none">
+ <div class="toolbar">
+ <button class="btn-primary" onclick="abrirNovoFornecedor()">+ Novo Fornecedor</button>
+ <input type="text" class="search-input" id="buscaFornecedor" placeholder="Buscar fornecedor...">
+ <div class="spacer"></div>
+ </div>
+ <div class="grid-wrap">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>Ação</th>
+ <th>Nome</th>
+ <th>CNPJ/CPF</th>
+ <th>Telefone</th>
+ <th>Email</th>
+ <th>Cidade/UF</th>
+ </tr>
+ </thead>
+ <tbody id="tbodyFornecedores"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- ABA: Tributações -->
+<div id="abaTributacoes" style="display:none">
+<div class="toolbar">
+<button class="btn-primary" onclick="abrirNovaTributacao()">+ Nova Tributação</button>
+<div class="spacer"></div>
+</div>
+<div class="grid-wrap">
+<table class="data-table">
+<thead><tr><th>Ação</th><th>Descrição</th><th>NCM</th><th>CST</th><th>ICMS %</th><th>IPI %</th><th>PIS %</th><th>COFINS %</th></tr></thead>
+<tbody id="tbodyTributacoes"><tr><td colspan="8" class="empty-grid">Nenhuma tributação configurada</td></tr></tbody>
+</table>
+</div>
+</div>
+
+ </div>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Modal produto -->
+<div class="modal-overlay" id="produtoModal" style="display:none">
+ <div class="modal" style="width:520px;max-height:90vh;overflow-y:auto;padding:28px 32px">
+ <h2 id="produtoModalTitulo">Novo Produto</h2>
+ <input type="hidden" id="produtoId">
+ <div class="form-row"><label>Nome *</label><input type="text" id="prodNome"></div>
+ <div class="form-grid">
+ <div class="form-row"><label>Código</label><input type="text" id="prodCodigo"></div>
+ <div class="form-row"><label>Categoria</label>
+ <select id="prodCategoria" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px"></select>
+ </div>
+ </div>
+ <div class="form-grid">
+ <div class="form-row"><label>Preço de Venda *</label><input type="number" step="0.01" id="prodPreco"></div>
+ <div class="form-row"><label>Custo</label><input type="number" step="0.01" id="prodCusto"></div>
+ </div>
+ <div class="form-grid">
+ <div class="form-row"><label>Estoque Inicial</label><input type="number" id="prodEstoque"></div>
+ <div class="form-row"><label>Unidade</label><input type="text" id="prodUnidade" value="UN"></div>
+ </div>
+ <div class="form-row"><label>Fornecedor</label>
+ <select id="prodFornecedor" style="width:100%;border:1px solid var(--borda);border-radius:4px;padding:8px 10px"></select>
+ </div>
+ <div class="modal-actions">
+ <button class="btn-cancel" onclick="fechar('produtoModal')">CANCELAR</button>
+ <button class="btn-primary" onclick="salvarProduto()">SALVAR</button>
+ </div>
+ </div>
+</div>
+
+<!-- Modal fornecedor -->
+<div class="modal-overlay" id="fornecedorModal" style="display:none">
+ <div class="modal" style="width:480px;max-height:90vh;overflow-y:auto;padding:28px 32px">
+ <h2 id="fornecedorModalTitulo">Novo Fornecedor</h2>
+ <input type="hidden" id="fornId">
+ <div class="form-row"><label>Nome *</label><input type="text" id="fornNome"></div>
+ <div class="form-grid">
+ <div class="form-row"><label>CNPJ/CPF</label><input type="text" id="fornCnpj"></div>
+ <div class="form-row"><label>RG/I.E.</label><input type="text" id="fornRgIe"></div>
+ </div>
+ <div class="form-grid">
+ <div class="form-row"><label>Telefone</label><input type="text" id="fornTelefone"></div>
+ <div class="form-row"><label>Email</label><input type="email" id="fornEmail"></div>
+ </div>
+ <div class="form-row"><label>Endereço</label><input type="text" id="fornEndereco"></div>
+ <div class="form-grid">
+ <div class="form-row"><label>Cidade</label><input type="text" id="fornCidade"></div>
+ <div class="form-row"><label>Estado</label><input type="text" id="fornEstado" maxlength="2"></div>
+ </div>
+ <div class="modal-actions">
+ <button class="btn-cancel" onclick="fechar('fornecedorModal')">CANCELAR</button>
+ <button class="btn-primary" onclick="salvarFornecedor()">SALVAR</button>
+ </div>
+ </div>
+</div>
+
+<!-- Modal gerenciar categorias -->
+<div class="modal-overlay" id="catModal" style="display:none">
+  <div class="modal" style="width:440px;max-height:80vh;overflow-y:auto;padding:28px 32px">
+    <h2>Gerenciar Categorias</h2>
+    <div class="form-row" style="display:flex;gap:8px">
+      <input type="text" id="novaCatNome" placeholder="Nome da nova categoria" style="flex:1;border:1px solid var(--borda);border-radius:4px;padding:8px 10px">
+      <button class="btn-primary" onclick="adicionarCategoria()">Adicionar</button>
+    </div>
+    <div id="catModalLista" style="margin-top:12px"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('catModal')">FECHAR</button>
+    </div>
+  </div>
+</div>
+<!-- Modal nova tributação -->
+<div class="modal-overlay" id="tribModal" style="display:none">
+  <div class="modal" style="width:480px;max-height:90vh;overflow-y:auto;padding:28px 32px">
+    <h2 id="tribModalTitulo">Nova Tributação</h2>
+    <input type="hidden" id="tribId">
+    <div class="form-row"><label>Descrição *</label><input type="text" id="tribDesc" placeholder="Ex: Regra padrão varejo"></div>
+    <div class="form-grid">
+      <div class="form-row"><label>NCM</label><input type="text" id="tribNcm" placeholder="0000.00.00"></div>
+      <div class="form-row"><label>CST</label><input type="text" id="tribCst" placeholder="00"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>ICMS %</label><input type="number" step="0.01" id="tribIcms" value="0"></div>
+      <div class="form-row"><label>IPI %</label><input type="number" step="0.01" id="tribIpi" value="0"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>PIS %</label><input type="number" step="0.01" id="tribPis" value="0"></div>
+      <div class="form-row"><label>COFINS %</label><input type="number" step="0.01" id="tribCofins" value="0"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="fechar('tribModal')">CANCELAR</button>
+      <button class="btn-primary" onclick="salvarTributacao()">SALVAR</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="shell.js"></script>
+<script src="produtos.js"></script>
+</body>
+</html>
